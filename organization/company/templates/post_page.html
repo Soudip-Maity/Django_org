@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="p-4 ">
+    <div class="d-flex justify-content-between  p-4">
+            <h1>post page </h1>
+       <a href="{% url 'link_create' %}" class="btn btn-primary"> + Create</a>
+
+    </div>
+    <div class="bgc-grey p-4">
+{% for link in links %}
+  <div class="card" style="width: 18rem">
+    
+        {% if link.photo %}
+      <!-- ✅ Use uploaded image -->
+      <img src="{{ link.photo.url }}" class="card-img-top" alt="photo" style="height:200px; object-fit:cover;" />
+    {% else %}
+      <!-- ✅ Fallback static image -->
+      <img src="{% static 'images/image.png' %}" class="card-img-top" alt="default" style="height:200px; object-fit:cover;" />
+    {% endif %}
+
+
+    <div class="card-body">
+      <h5 class="card-title">{{link.user.username}}</h5>
+      <p class="card-text">{{link.text}}</p>
+      {% if link.user == user%}
+        <a href="{% url 'link_edit' link.id %}" class="btn btn-primary">edit</a>
+        <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+      {% endif %}
+    </div> 
+  </div>
+  {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

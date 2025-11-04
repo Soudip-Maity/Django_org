@@ -1,0 +1,29 @@
+{% extends "layout.html" %} 
+
+{% block content %}
+
+
+
+<div class="container mt-5 flex justify-center">
+  <form class="border shadow-lg p-8 rounded-lg" style="width: 400px"  method="post">
+    <h3 class="text-center font-semibold mb-4 text-xl">OTP</h3>
+    {% if messages %}
+      <div class="bg-red-600 text-white p-2 rounded my-4">
+        <ul>
+          {% for message in messages %}
+            <li class="text-sm">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+
+    {% csrf_token %}
+    <div class="mb-5">
+      {{ form.otp }}
+    </div>
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+  </form>
+</div>
+
+{% endblock content %}

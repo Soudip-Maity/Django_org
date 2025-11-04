@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+ {% block title %} 
+ {% endblock %} 
+
+ {% block content %}
+<h1 class="text-center mt-4">welcome to my website</h1>
+<h2>
+  {%if form.instance.pk %}
+   Edit Link 
+  {% else%} 
+  Create Link 
+  {% endif %}
+</h2>
+  <form method="POST" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button class="btn btn-warning" type="submit">add</button>
+  </form>
+  <a href="{% url 'employee' %}">Back</a>
+
+{% endblock %}
