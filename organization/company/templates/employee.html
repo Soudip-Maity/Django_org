@@ -6,24 +6,61 @@
 
  
     </div>
-      <div class="p-4 bgc-grey">
+      <div class="p-4 d-flex">
    
        
 
      {% for link in links %}
-        <div class="card" style="width: 18rem">
+     {% if link.id == request.user.id %}
+     <div class="card m-3 p-3 d-flex bg-success" style="width: 18rem" >
    
             {% if link.username %}
+        
             <p>{{link.username}}</p>
+            {% if request.user.is_superuser and not link.is_superuser %}
+
+            <p>Admin</p>
+
+            {% else %}
+            <p>Member</p>
+            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+
+            
+            {% endif %}
+
+      
             {% else %}
             
             <p>user</p>
             {% endif %}
 
-
-  
- 
         </div>
+     {% else %}
+     <div class="card m-3 p-3 d-flex" style="width: 18rem" >
+   
+            {% if link.username %}
+        
+            <p>{{link.username}}</p>
+            {% if link.is_superuser  %}
+            <p>Admin</p>
+
+            {% else %}
+            <p>Member</p>
+            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+
+            
+            {% endif %}
+
+      
+            {% else %}
+            
+            <p>user</p>
+            {% endif %}
+
+        </div>
+
+     {% endif %}
+        
     {% endfor %}
 </div>
 </div>

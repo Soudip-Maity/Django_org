@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegistrationForm,postform
+from .forms import UserRegistrationForm,postform,AdminRegistrationForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login
@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.conf import settings
 import random
 from .models import post_model
+from django.http import HttpResponseForbidden
 # Create your views here.
 
 #########.........employee info(home page).....
@@ -65,12 +66,27 @@ def link_edit(request,link_id):
 #############............DELETE LINK....................
 @login_required
 def link_delete(request,link_id):
-  links= get_object_or_404(post_model, pk=link_id, user=request.user)
+   link= get_object_or_404(post_model, pk=link_id)
 
-  if request.method=='POST':
-     links.delete()
-     return redirect('employee')  
-  return render(request, 'link_confirm_deletion.html' ,{'post_model': post_model})
+
+   if request.user == link.user or request.user.is_superuser:
+     if request.method == 'POST':
+         link.delete()
+         return redirect('post_page')
+     return render(request, 'link_confirm_deletion.html', {'link': link})
+   else:
+     return HttpResponseForbidden("You are not allowed to delete this post.")
+
+#############............DELETE user....................
+# @login_required
+# def user_delete(request,link_id):
+
+#   user_del_auth= get_object_or_404(User, pk=link_id, user=request.user)
+
+#   if request.method=='POST':
+#      user_del_auth.delete()
+#      return redirect('employee')  
+#   return render(request, 'link_confirm_deletion.html' ,{'User': User})
 
 #..........registration.......
 def registration(request):
@@ -91,6 +107,25 @@ def registration(request):
         form = UserRegistrationForm()
 
         return render(request, 'registration/register.html' ,{'form': form}) 
+###########..........Admin registration from...................  
+def admin_registration(request):
+    if request.method == 'POST':
+        admin_form = AdminRegistrationForm(request.POST)
+        if admin_form.is_valid():
+            user=admin_form.save(commit=False)
+            user.set_password(admin_form.cleaned_data['password1'])
+            user.save()
+            login(request,user)
+            return redirect('employee')
+        else:
+               print(admin_form.errors) 
+               return render(request, 'registration/admin_reg.html', {'admin_form': admin_form})
+
+
+    else:
+        admin_form = AdminRegistrationForm()
+
+        return render(request, 'registration/admin_reg.html' ,{'admin_form': admin_form}) 
         
 
 ########...................check otp.....................................................................

@@ -6,7 +6,9 @@ urlpatterns = [
     path('post/create/', views.link_create,name="link_create"),
     path('<int:link_id>/edit/', views.link_edit,name="link_edit"),
     path('<int:link_id>/delete/', views.link_delete, name="link_delete"),
+    # path('<int:link_id>/delete/', views.user_delete, name="user_delete"),
     path('registration/', views.registration,name="registration"),
+    path('admin_registration/', views.admin_registration,name="admin_registration"),
     
 
 

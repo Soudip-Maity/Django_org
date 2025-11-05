@@ -23,9 +23,15 @@
     <div class="card-body">
       <h5 class="card-title">{{link.user.username}}</h5>
       <p class="card-text">{{link.text}}</p>
-      {% if link.user == user%}
+
+      {% if link.user == user %}
         <a href="{% url 'link_edit' link.id %}" class="btn btn-primary">edit</a>
         <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+    
+      {% endif %}
+      {% if request.user.is_superuser  %}
+        <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+
       {% endif %}
     </div> 
   </div>

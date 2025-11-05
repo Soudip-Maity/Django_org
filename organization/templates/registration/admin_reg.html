@@ -2,12 +2,12 @@
 
 
 {% block content %}
-    <h1>Register Page</h1>
+    <h1>Admin Register Page</h1>
 
 <div class="p-4">
 <form method="post">
 {% csrf_token %}
-{{form.as_p}}
+{{admin_form.as_p}}
 <button class="btn btn-primery">register</button>
 
 </form>
