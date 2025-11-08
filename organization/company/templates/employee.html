@@ -1,68 +1,32 @@
 {% extends "layout.html" %}
+
 {% block content %}
-<div class="p-4 ">
-    <div class="d-flex justify-content-between  p-4">
-            <h1>employee page </h1>
+<div class="p-4">
+  <div class="d-flex justify-content-between p-4">
+    <h1>Employee Page</h1>
+  </div>
 
- 
-    </div>
-      <div class="p-4 d-flex">
-   
-       
-
-     {% for link in links %}
-     {% if link.id == request.user.id %}
-     <div class="card m-3 p-3 d-flex bg-success" style="width: 18rem" >
-   
-            {% if link.username %}
-        
-            <p>{{link.username}}</p>
-            {% if request.user.is_superuser and not link.is_superuser %}
-
+  <div class="p-4 d-flex flex-wrap">
+    {% for link in links %}
+      <div class="card m-3 p-3 d-flex {% if link.id == request.user.id %}bg-success{% endif %}" style="width: 18rem">
+        {% if link.username %}
+          <p>{{ link.username }}</p>
+          
+          {% if link.is_superuser %}
             <p>Admin</p>
-
-            {% else %}
+          {% else %}
             <p>Member</p>
-            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
+          {% endif %}
 
-            
-            {% endif %}
+          {% if request.user.is_superuser %}  
+            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">Delete</a> 
+          {% endif %}   
 
-      
-            {% else %}
-            
-            <p>user</p>
-            {% endif %}
-
-        </div>
-     {% else %}
-     <div class="card m-3 p-3 d-flex" style="width: 18rem" >
-   
-            {% if link.username %}
-        
-            <p>{{link.username}}</p>
-            {% if link.is_superuser  %}
-            <p>Admin</p>
-
-            {% else %}
-            <p>Member</p>
-            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">delete</a>
-
-            
-            {% endif %}
-
-      
-            {% else %}
-            
-            <p>user</p>
-            {% endif %}
-
-        </div>
-
-     {% endif %}
-        
+        {% else %}
+          <p>User</p>
+        {% endif %}
+      </div>
     {% endfor %}
+  </div>
 </div>
-</div>
-
 {% endblock %}
