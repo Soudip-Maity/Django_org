@@ -7,9 +7,9 @@
        <a href="{% url 'link_create' %}" class="btn btn-primary"> + Create</a>
 
     </div>
-    <div class="bgc-grey p-4">
+    <div class="bgc-grey p-4 d-flex ">
 {% for link in links %}
-  <div class="card" style="width: 18rem">
+  <div class="card m-4 " style="width: 18rem">
     
         {% if link.photo %}
       <!-- ✅ Use uploaded image -->
