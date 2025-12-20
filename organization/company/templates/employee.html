@@ -18,9 +18,19 @@
             <p>Member</p>
           {% endif %}
 
-          {% if request.user.is_superuser %}  
-            <a href="{% url 'link_delete' link.id %}" class="btn btn-danger">Delete</a> 
-          {% endif %}   
+          {% comment %} {% if request.user.is_superuser %}   {% endcomment %}
+      {% if request.user.is_superuser %}
+  
+        {% if link.id == request.user.id %}
+          <a href="{% url 'user_delete' link.id %}" class="btn btn-danger">Delete</a>
+        
+        {% elif not link.is_superuser %}
+          <a href="{% url 'user_delete' link.id %}" class="btn btn-danger">Delete</a>
+        
+        {% endif %}
+
+      {% endif %}
+
 
         {% else %}
           <p>User</p>

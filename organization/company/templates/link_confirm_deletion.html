@@ -8,9 +8,11 @@
 
 {% block content %}
 <h1 class="text-center mt-4">sure ? want to delete?</h1>
-<form method="POST">
+<form method="post">
     {% csrf_token %}
-    <button class="btn btn-danger">Delete</button>
-    <a class=" btn btn-success"href="{% url 'employee' %}">cancil</a>
+    <p>Are you sure you want to delete {{ user.username }}?</p>
+
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'employee' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

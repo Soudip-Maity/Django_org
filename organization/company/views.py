@@ -22,7 +22,7 @@ def employee(request):
     links=  User.objects.all().order_by('-date_joined')
     return render(request,'employee.html',{'links':links})
 
-#.........post page ..................
+#.........post page .................. 
 @login_required
 def post_page(request):
     links=  post_model.objects.all().order_by('-created_at')
@@ -78,15 +78,23 @@ def link_delete(request,link_id):
      return HttpResponseForbidden("You are not allowed to delete this post.")
 
 #############............DELETE user....................
-# @login_required
-# def user_delete(request,link_id):
+@login_required
+def user_delete(request, link_id):
+    user_to_delete = get_object_or_404(User, pk=link_id)
 
-#   user_del_auth= get_object_or_404(User, pk=link_id, user=request.user)
+    # ✅ Only superuser OR user himself can delete
+    if not (request.user.is_superuser or request.user == user_to_delete):
+        return redirect('employee')
 
-#   if request.method=='POST':
-#      user_del_auth.delete()
-#      return redirect('employee')  
-#   return render(request, 'link_confirm_deletion.html' ,{'User': User})
+    if request.method == 'POST':
+        user_to_delete.delete()
+        return redirect('employee')
+
+    return render(
+        request,
+        'link_confirm_deletion.html',
+        {'user': user_to_delete}
+    )
 
 #..........registration.......
 def registration(request):
@@ -94,7 +102,7 @@ def registration(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user=form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])
+            user.set_password(form.cleaned_data['password1']) 
             user.save()
             login(request,user)
             return redirect('employee')
